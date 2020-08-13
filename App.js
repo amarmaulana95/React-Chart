@@ -3,28 +3,12 @@ import {Text,View,Dimensions} from 'react-native';
 import {LineChart} from "react-native-chart-kit";
 
 const data = {
-  labels: ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"],
+  labels: ["Gen", "Feb", "Mar", "Apr", "Mei", "Juni", "Juli", "Ags", "Sep", "Okt", "Nov", "Des"],
   datasets: [
     {
       data: []
     }
   ]
-}
-const chartConfig = {
-  backgroundColor: "#e26a00",
-  backgroundGradientFrom: "#fb8c00",
-  backgroundGradientTo: "#ffa726",
-  decimalPlaces: 2, // optional, defaults to 2dp
-  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  style: {
-    borderRadius: 16
-  },
-  propsForDots: {
-    r: "6",
-    strokeWidth: "2",
-    stroke: "#ffa726"
-  }
 }
 
 export default class App extends React.Component {
@@ -32,47 +16,58 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      dataSource: []
+      //statis race
+      dataSource: [{"total":122.51},{"total":911},{"total":1188.53},{"total":12},{"total":390.65},{"total":54.98}]
     };
 
   }
 
   componentDidMount() {
-  this.GetData();
+  this.JsonAing();
   }
 
-  GetData = () => {
-    return fetch('http://192.168.100.158:3000/data')
-    .then((response) => response.json())
-    .then((responseJson) => {
-      this.setState({
-        isLoading: false,
-        dataSource: responseJson
-      });
-    })
-    .catch((error) =>{
-      console.error(error);
-    });
+  JsonAing = () => {
+    // return fetch('http://rajacepat.com/')
+    // .then((response) => response.json())
+    // .then((responseJson) => {
+    //   this.setState({
+    //     isLoading: false,
+    //     dataSource: responseJson
+    //   });
+    // })
+    // .catch((error) =>{
+    //   console.error(error);
+    // });
   }
 
   render() {
-
-    data.datasets[0].data = this.state.dataSource.map(value => value.IMPORTO);
-
+    data.datasets[0].data = this.state.dataSource.map(value => value.total);
     return (
       <View>
-      <LineChart
-      data={data}
-      width={Dimensions.get("window").width} // from react-native
-      height={220}
-      yAxisLabel={"$"}
-      chartConfig={chartConfig}
-      bezier
-      style={{
-        marginVertical: 8,
-        borderRadius: 16
-      }}
-      />
+     <LineChart
+        verticalLabelRotation={110} //Degree to rotate
+        data={data}
+        width={Dimensions.get("window").width*0.9}
+        height={400}
+        yAxisLabel={"DH"}
+        width={Dimensions.get('window').width - 16}
+        height={220}
+        yAxisLabel={'Rs'}
+        chartConfig={{
+          backgroundColor: '#1cc910',
+          backgroundGradientFrom: '#eff3ff',
+          backgroundGradientTo: '#efefef',
+          decimalPlaces: 2,
+          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          style: {
+            borderRadius: 16,
+          },
+        }}
+        style={{
+          marginVertical: 8,
+          borderRadius: 16,
+        }}
+       />
       </View>
     );
 }
